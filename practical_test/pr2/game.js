@@ -17,6 +17,15 @@ function Game(armies) {
             `Итог всей игры: ${this.getArmyWithMostWins()}`;
         this.log(end_message, 1);
     };
+
+    this.getRandomArmy = function() {
+        const randomArmies = this.armies.filter(army => 
+            !army.checkArmy());
+        const randomIndex = Math.floor(Math.random() * randomArmies.length);
+        const randomArmy = randomArmies[randomIndex];
+
+        return randomArmy;
+    };
   
     this.round = function() {
         console.log(this.wins);
@@ -27,20 +36,24 @@ function Game(armies) {
         while (round) {
             this.log(`ход ${motion_id}:\n`);
     
-            for (const attacker of this.armies) {
-            const defender = this.getRandomDefender(attacker);
+            let attacker = this.getRandomArmy();
+            let defender = this.getRandomArmy();
+
+            while (attacker === defender) {
+                defender = this.getRandomArmy();
+            }
     
             const attackingUnit = attacker.getRandUnit();
             const defendingUnit = defender.getRandUnit();
     
             console.log(`Атакующий: ${attackingUnit.unit_name}` +
-                `(Здоровье: ${attackingUnit.unit_health}, Урон: ${attackingUnit.unit_damage})`);
+                `(Здоровье: ${attackingUnit.unit_health}, Урон: ${attackingUnit.unit_damage}, Армия: ${attacker.army_name})`);
             console.log(`Защищающийся: ${defendingUnit.unit_name}` +
-                `(Здоровье: ${defendingUnit.unit_health}, Урон: ${defendingUnit.unit_damage})`);
+                `(Здоровье: ${defendingUnit.unit_health}, Урон: ${defendingUnit.unit_damage}, Армия: ${defender.army_name})`);
     
             attackingUnit.hit(defendingUnit);
     
-            if (attacker.checkArmy()) {
+            if (defender.checkArmy()) {
                 let win_message = `Победила армия: "${attacker.army_name}"\n` +
                 `выжившие юниты этой армии: ${attacker.getSurvivorUnits()}\n` +
                 `их общее оставшееся здоровье: ${attacker.getUnitsHealth()}\n` +
@@ -56,11 +69,13 @@ function Game(armies) {
                 this.wins[attacker.army_name] = 1;
                 }
     
-                attacker.recoveryUnits();
-                defender.recoveryUnits();
+                this.armies.forEach((army) => {
+                    army.recoveryUnits();
+                });
+                
                 round = false;
             }
-            }
+            
             motion_id++;
         }
     };
@@ -107,13 +122,6 @@ function Game(armies) {
         return wins_message;
     };
     
-    this.getRandomDefender = function(attacker) {
-        const defenders = this.armies.filter(army => army !== attacker &&
-            !army.checkArmy());
-        const randomIndex = Math.floor(Math.random() * defenders.length);
-        return defenders[randomIndex];
-    };
-    
     this.log = function(message, alert_vkl = 0) {
         if (alert_vkl === 0) {
             console.log(message);
@@ -123,4 +131,3 @@ function Game(armies) {
         }
     };
 }
-    

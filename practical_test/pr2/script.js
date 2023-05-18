@@ -1,9 +1,10 @@
 try {
     const numberOfArmies = promptInteger("Введите количество армий:");
-    validatePositiveNumber(numberOfArmies, "Количество армий должно быть положительным числом.");
-    if (numberOfArmies === 1) {
+    
+    if (numberOfArmies <= 1) {
         throw new Error("Количество армий должно быть больше одной.");
     }
+
     const armies = createArmies(numberOfArmies);
     const game = new Game(armies);
     game.play();
@@ -11,20 +12,18 @@ try {
     console.error(error);
 }
 
-// если введенное значение не является числом, функция будет запрашивать число до тех пор, пока не будет получено корректное значение.
+// если введенное значение не является числом, 
+// функция будет запрашивать число до тех пор, пока не будет получено корректное значение.
 function promptInteger(message) {
     let value;
     do {
         value = parseInt(prompt(message));
-    } while (isNaN(value));
+    } while (!isNumber(value));
     return value;
 }
 
-// если значение <=0, функция выбрасывает ошибку с заданным сообщением.
-function validatePositiveNumber(value, message) {
-    if (value <= 0) {
-        throw new Error(message);
-    }
+function isNumber(num) {
+	return typeof num === 'number' && !isNaN(num);
 }
 
 function createArmies(numberOfArmies) {
@@ -35,7 +34,11 @@ function createArmies(numberOfArmies) {
             armyName = prompt(`Введите имя армии ${i}:`);
         }
         const armyUnits = promptInteger(`Введите количество юнитов для армии ${i}:`);
-        validatePositiveNumber(armyUnits, `Количество юнитов для армии ${i} должно быть положительным числом.`);
+        
+        if (armyUnits <= 0) {
+            throw new Error(`Количество юнитов для армии ${i} должно быть положительным числом.`);
+        }
+
         armies.push(new Army(armyName, armyUnits));
     }
     return armies;

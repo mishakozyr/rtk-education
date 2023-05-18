@@ -12,10 +12,13 @@ function Army(name, quantityArmyUnits) {
     this.generateUnits(quantityArmyUnits);
   
     this.getRandUnit = function() {
-        const randIndex = Math.floor(Math.random() * this.army_units.length);
-        const randUnit = this.army_units[randIndex];
+        const randUnits = this.army_units.filter(unit => 
+            unit.unit_status !== "destroy");
+        const randIndex = Math.floor(Math.random() * randUnits.length);
+        const randUnit = randUnits[randIndex];
+        
         return randUnit;
-      };
+    };
   
     this.getSurvivorUnits = function() {
         const survivor_units = this.army_units
@@ -58,4 +61,3 @@ function Army(name, quantityArmyUnits) {
         return this.army_units.every(unit => unit.unit_status === "destroy");
     };
 }
-  

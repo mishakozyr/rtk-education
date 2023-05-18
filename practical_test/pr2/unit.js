@@ -1,4 +1,4 @@
-function Unit() {
+function Unit() { 
     this.unit_health = 100;
     this.unit_status = "active";
 
@@ -49,4 +49,3 @@ function Unit() {
         }
     };
 }
-  
