@@ -6,7 +6,7 @@ try {
     }
     const armies = createArmies(numberOfArmies);
     const game = new Game(armies);
-} catch (error) {
+} catch (error) { 
     console.error(error); 
 }
 
