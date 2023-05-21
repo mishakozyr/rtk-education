@@ -1,6 +1,7 @@
 /**
  * реализовать класс, вычисляющий факториал числа. Вызов метода 
- * класса произвести в блоке try…catch. Обработку ошибок каждого типа производить в своем классе, 
+ * класса произвести в блоке try…catch. Обработку ошибок 
+ * каждого типа производить в своем классе, 
  * наследованным от Error. 
  * 
  * - на JS, вызов методов классов должен быть доступен, 
@@ -13,17 +14,21 @@ class NonIntegerNumberException extends Error {}
 
 class Factorial
 {
-    static compute(n) {
+    static compute(n) 
+    {
         if (typeof n !== "number") {
-            throw new InvalidFactorialArgumentException("Коэффициент должен быть числом");
+            throw new InvalidFactorialArgumentException
+            ("Коэффициент должен быть числом");
         }
 
         if (!Number.isInteger(n)) {
-            throw new NonIntegerNumberException("Коэффицент должен быть целым числом");
+            throw new NonIntegerNumberException
+            ("Коэффицент должен быть целым числом");
         }
 
         if (n < 0) {
-            throw new NegativeNumberException("Коэффицент должен быть неотрицательным числом");
+            throw new NegativeNumberException
+            ("Коэффицент должен быть неотрицательным числом");
         }
 
         let result = 1;
@@ -37,7 +42,8 @@ class Factorial
 }
 
 try {
-    const input = prompt("Введите целое неотрицательное число для вычисления факториала:");
+    const input = prompt
+    ("Введите целое неотрицательное число для вычисления факториала:");
     const number = parseInt(input);
 
     const factorial = Factorial.compute(number);
@@ -64,8 +70,9 @@ try {
 }
 
 /**
- * реализовать класс, находящий корни квадратного уравнения. Вызов метода
- * класса произвести в блоке try…catch. Обработку ошибок каждого типа производить в своем классе, 
+ * реализовать класс, находящий корни квадратного уравнения. 
+ * Вызов метода класса произвести в блоке try…catch. 
+ * Обработку ошибок каждого типа производить в своем классе, 
  * наследованным от Error. 
  * 
  * - на JS, вызов методов классов должен быть доступен, 
@@ -76,33 +83,36 @@ class InvalidQuadraticArgumentException extends Error {}
 class ZeroCoefficientException extends Error {}
 class NegativeDiscriminantException extends Error {}
 
-function isNumericString(str)
+function isNumber(num) 
 {
-    return /^-?\d*\.?\d+$/.test(str);
-} 
+	return typeof num === 'number' && !isNaN(num);
+}
 
 class QuadraticEquation
 {
     constructor(a, b, c) 
     {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+        this.a = parseInt(a);
+        this.b = parseInt(b);
+        this.c = parseInt(c);
 
         this.validateCoefficients();
     }
 
     validateCoefficients()
     {
-        if (!isNumericString(this.a) || !isNumericString(this.b) || !isNumericString(this.c)) {
-            throw new InvalidQuadraticArgumentException("Коэффициенты должны быть числами"); 
+        if (!isNumber(this.a) || !isNumber(this.b) ||
+        !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффициенты должны быть числами"); 
         }
     }
 
     solve()
     {
         if (this.a == 0) {
-            throw new ZeroCoefficientException("Коэффициент a не может быть равен 0"); 
+            throw new ZeroCoefficientException
+            ("Коэффициент a не может быть равен 0"); 
         }
 
         let discriminant = (this.b ** 2) - (4 *this.a * this.c);

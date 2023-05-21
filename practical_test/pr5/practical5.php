@@ -1,5 +1,7 @@
 <?php
 
+require_once 'exception_classes.php';
+
 /**
  * а) реализовать функцию, вычисляющую факториал числа. 
  * Вызов функции произвести в блоке try…catch. 
@@ -7,17 +9,10 @@
  * наследованным от Exception.
  */
 
-class NegativeNumberException extends Exception {}
-class NonIntegerException extends Exception {}
-
 function factorial($n) 
 {
     if ($n < 0) {
-        throw new NegativeNumberException("Нельзя вычислить факториал отрицательного числа!");
-    }
-
-    if (!is_int($n)) {
-        throw new NonIntegerException("Нельзя вычислить факториал нецелого числа");
+        throw new NegativeNumberException($n);
     }
 
     $result = 1;
@@ -30,14 +25,15 @@ function factorial($n)
 }
 
 try {
-    $n = 5;
+    $n = -5;
+
     $result = factorial($n);
     echo "Факториал числа $n равен $result";
 
 } catch (NegativeNumberException $e) {
     echo $e->getMessage();
 
-} catch (NonIntegerException $e) {
+} catch (OverflowException $e) {
     echo $e->getMessage();
 
 } catch (Exception $e) {
@@ -57,11 +53,6 @@ class InvalidQuadraticArgumentException extends Exception {}
 class ZeroCoefficientException extends Exception {} 
 class NegativeDiscriminantException extends Exception {} 
 
-function is_numeric_string($str) 
-{
-    return preg_match('/^-?\d*\.?\d+$/', $str) === 1;
-}
- 
 class QuadraticEquation 
 { 
     private $a; 
@@ -79,15 +70,18 @@ class QuadraticEquation
  
     public function validateCoefficients() 
     { 
-        if (!is_numeric_string($this->a) || !is_numeric_string($this->b) || !is_numeric_string($this->c)) { 
-            throw new InvalidQuadraticArgumentException("Коэффициенты должны быть числами"); 
+        if (!is_numeric($this->a) || !is_numeric($this->b) || 
+        !is_numeric($this->c)) { 
+            throw new InvalidQuadraticArgumentException
+            ("Коэффициенты должны быть числами"); 
         } 
     } 
  
     public function solve() 
     { 
         if ($this->a == 0) { 
-            throw new ZeroCoefficientException("Коэффициент a не может быть равен 0"); 
+            throw new ZeroCoefficientException
+            ("Коэффициент a не может быть равен 0"); 
         } 
  
         $discriminant = ($this->b ** 2) - (4 * $this->a * $this->c); 
@@ -108,7 +102,7 @@ class QuadraticEquation
 } 
  
 try { 
-    $equation = new QuadraticEquation('iu', -5, 6); 
+    $equation = new QuadraticEquation('fg', -5, 6); 
     $roots = $equation->solve(); 
  
     if (is_array($roots)) { 
@@ -116,7 +110,8 @@ try {
             echo "Уравнение имеет один корень: " . $roots[0]; 
 
         } else { 
-            echo "Уравнение имеет два корня: " . $roots[0] . ", " . $roots[1]; 
+            echo "Уравнение имеет два корня: " . $roots[0] . ", " .
+             $roots[1]; 
         } 
 
     } else { 
@@ -131,6 +126,7 @@ try {
  
 } catch (InvalidQuadraticArgumentException $e) {
     echo "Ошибка: " . $e->getMessage();
+    
 } catch (Exception $e) {
     echo "Неизвестная ошибка: " . $e->getMessage();
 }

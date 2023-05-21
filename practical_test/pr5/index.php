@@ -7,7 +7,7 @@
     <title>Использование защищенного блока try…catch</title>
 </head>
 <body>
-    <?php #require_once("practical5.php") ?>
-    <script src="script.js"></script>
+    <?php require_once("practical5.php") ?>
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
