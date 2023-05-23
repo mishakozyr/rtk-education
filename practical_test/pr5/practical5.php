@@ -1,7 +1,7 @@
 <?php
 
-require_once 'exception_classes.php';
-
+require_once 'factorial_exception_classes.php';
+ 
 /**
  * а) реализовать функцию, вычисляющую факториал числа. 
  * Вызов функции произвести в блоке try…catch. 
@@ -11,33 +11,61 @@ require_once 'exception_classes.php';
 
 function factorial($n) 
 {
+    if (!is_int($n)) {
+        throw new FactorialNumberException
+        ("Аргумент должен быть целым числом.", 1);
+    }
+
     if ($n < 0) {
-        throw new NegativeNumberException($n);
+        throw new NegativeNumberException
+        ("Число должно быть неотрицательным.", 2);
     }
 
-    $result = 1;
-
-    for ($i = 2; $i <= $n; $i++) {
-        $result *= $i;
+    if ($n > 20) {
+        throw new BigNumberException
+        ("Число слишком большое для вычисления факториала.", 3);
     }
 
-    return $result;
+    if ($n === 0) {
+        return 1;
+    }
+
+    $factorial = 1;
+
+    for ($i = 1; $i <= $n; $i++) {
+        $factorial *= $i;
+    }
+
+    return $factorial;
 }
 
 try {
-    $n = -5;
+
+    $n = '5';
 
     $result = factorial($n);
     echo "Факториал числа $n равен $result";
 
-} catch (NegativeNumberException $e) {
-    echo $e->getMessage();
+} catch (FactorialNumberException $e) {
 
-} catch (OverflowException $e) {
-    echo $e->getMessage();
+    echo $e->showError();
+    $e->logError();
+
+} catch (NegativeNumberException $e) {
+    
+    echo $e->showError();
+    $e->logError();
+
+} catch (BigNumberException $e) {
+    
+    echo $e->showError();
+    $e->logError();
 
 } catch (Exception $e) {
-    echo "Произошла ошибка: " . $e->getMessage();
+
+    echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+    $e->getMessage() . "</span>";
+
 }
 
 echo "<br>";
@@ -49,9 +77,7 @@ echo "<br>";
  * наследованным от Exception.
  */
 
-class InvalidQuadraticArgumentException extends Exception {} 
-class ZeroCoefficientException extends Exception {} 
-class NegativeDiscriminantException extends Exception {} 
+require_once 'solve_exception_classes.php';
 
 class QuadraticEquation 
 { 
@@ -61,28 +87,32 @@ class QuadraticEquation
  
     public function __construct($a, $b, $c) 
     { 
+
         $this->a = $a; 
         $this->b = $b; 
         $this->c = $c; 
  
         $this->validateCoefficients(); 
+    
     } 
  
     public function validateCoefficients() 
     { 
+
         if (!is_numeric($this->a) || !is_numeric($this->b) || 
         !is_numeric($this->c)) { 
             throw new InvalidQuadraticArgumentException
-            ("Коэффициенты должны быть числами"); 
+            ("Коэффициенты должны быть числами", 1); 
+        } 
+
+        if ($this->a == 0) { 
+            throw new ZeroCoefficientException
+            ("Коэффициент a не может быть равен 0", 2); 
         } 
     } 
  
     public function solve() 
-    { 
-        if ($this->a == 0) { 
-            throw new ZeroCoefficientException
-            ("Коэффициент a не может быть равен 0"); 
-        } 
+    {
  
         $discriminant = ($this->b ** 2) - (4 * $this->a * $this->c); 
  
@@ -99,34 +129,48 @@ class QuadraticEquation
         $x2 = (-$this->b - sqrt($discriminant)) / (2 * $this->a); 
         return [$x1, $x2]; 
     } 
+
+    public function showResult()
+    {
+        $roots = $this->solve(); 
+ 
+        if (is_array($roots)) { 
+
+            if (count($roots) == 1) { 
+                return "Уравнение имеет один корень: " . $roots[0]; 
+    
+            } else { 
+                return "Уравнение имеет два корня: " . $roots[0] . ", " .
+                $roots[1]; 
+            } 
+    
+        } else { 
+            return $roots; 
+        } 
+
+    }
+
 } 
  
 try { 
-    $equation = new QuadraticEquation('fg', -5, 6); 
-    $roots = $equation->solve(); 
- 
-    if (is_array($roots)) { 
-        if (count($roots) == 1) { 
-            echo "Уравнение имеет один корень: " . $roots[0]; 
 
-        } else { 
-            echo "Уравнение имеет два корня: " . $roots[0] . ", " .
-             $roots[1]; 
-        } 
+    $equation = new QuadraticEquation(6, -5, 6); 
 
-    } else { 
-        echo $roots; 
-    } 
+    echo $equation->showResult(); 
  
 } catch (ZeroCoefficientException $e) { 
-    echo "Ошибка: " . $e->getMessage(); 
- 
-} catch (NegativeDiscriminantException $e) { 
-    echo "Ошибка: " . $e->getMessage(); 
+    
+    echo $e->showError();
+    $e->logError();
  
 } catch (InvalidQuadraticArgumentException $e) {
-    echo "Ошибка: " . $e->getMessage();
     
+    echo $e->showError();
+    $e->logError();
+
 } catch (Exception $e) {
-    echo "Неизвестная ошибка: " . $e->getMessage();
+
+    echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+    $e->getMessage() . "</span>";
+
 }

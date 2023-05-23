@@ -8,65 +8,90 @@
  * как через консоль, так и через prompt/alert.
  */
 
-class InvalidFactorialArgumentException extends Error {} 
-class NegativeNumberException extends Error {}
-class NonIntegerNumberException extends Error {}
-
 class Factorial
 {
-    static compute(n) 
+
+    constructor(n) 
     {
-        if (typeof n !== "number") {
-            throw new InvalidFactorialArgumentException
-            ("Коэффициент должен быть числом");
+        this.n = parseInt(n);
+
+        this.validateNumber();
+    }
+
+    validateNumber()
+    {
+        // typeof n !== "number"
+
+        if (!Number.isInteger(this.n)) {
+            throw new FactorialNumberException
+            ("Коэффицент должен быть целым числом", 2);
         }
 
-        if (!Number.isInteger(n)) {
-            throw new NonIntegerNumberException
-            ("Коэффицент должен быть целым числом");
-        }
-
-        if (n < 0) {
+        if (this.n < 0) {
             throw new NegativeNumberException
-            ("Коэффицент должен быть неотрицательным числом");
+            ("Коэффицент должен быть неотрицательным числом", 3);
         }
 
+        if (this.n > 20) {
+            throw new BigNumberException
+            ("Число слишком большое для вычисления факториала.", 3);
+        }
+    }
+
+    compute() 
+    {
         let result = 1;
 
-        for (let i = 2; i <= n; i++) {
+        for (let i = 2; i <= this.n; i++) {
             result *= i;
         }
 
         return result;
     }
+
+    showResult()
+    {
+        const number = this.n;
+        const factorial = this.compute();
+
+        console.log(`${number}! = ${factorial}`);
+        alert(`${number}! = ${factorial}`);
+    }
 }
 
 try {
-    const input = prompt
-    ("Введите целое неотрицательное число для вычисления факториала:");
-    const number = parseInt(input);
 
-    const factorial = Factorial.compute(number);
-    console.log(`${number}! = ${factorial}`);
-    alert(`${number}! = ${factorial}`);
+    const number = prompt
+    ("Введите целое неотрицательное число для вычисления факториала:");
+
+    const equation = new Factorial(number);
+
+    equation.showResult();
 
 } catch (e) {
-    if (e instanceof InvalidFactorialArgumentException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
 
-    } else if (e instanceof NonIntegerNumberException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
+    if (e instanceof FactorialNumberException) {
+
+        e.showAlert();
+        e.logError();
 
     } else if (e instanceof NegativeNumberException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
+
+        e.showAlert();
+        e.logError();
+
+    } else if (e instanceof BigNumberException) {
+
+        e.showAlert();
+        e.logError();
 
     } else {
+
         console.log("Неизвестная ошибка: " + e.message);
         alert("Неизвестная ошибка: " + e.message);
+    
     }
+
 }
 
 /**
@@ -79,10 +104,6 @@ try {
  * как через консоль, так и через prompt/alert.
  */
 
-class InvalidQuadraticArgumentException extends Error {} 
-class ZeroCoefficientException extends Error {}
-class NegativeDiscriminantException extends Error {}
-
 function isNumber(num) 
 {
 	return typeof num === 'number' && !isNaN(num);
@@ -92,28 +113,33 @@ class QuadraticEquation
 {
     constructor(a, b, c) 
     {
+
         this.a = parseInt(a);
         this.b = parseInt(b);
         this.c = parseInt(c);
 
         this.validateCoefficients();
+
     }
 
     validateCoefficients()
     {
+
         if (!isNumber(this.a) || !isNumber(this.b) ||
         !isNumber(this.c)) {
             throw new InvalidQuadraticArgumentException
-            ("Коэффициенты должны быть числами"); 
+            ("Коэффициенты должны быть числами", 1); 
         }
+
+        if (this.a == 0) {
+            throw new ZeroCoefficientException
+            ("Коэффициент a не может быть равен 0", 2); 
+        }
+
     }
 
     solve()
     {
-        if (this.a == 0) {
-            throw new ZeroCoefficientException
-            ("Коэффициент a не может быть равен 0"); 
-        }
 
         let discriminant = (this.b ** 2) - (4 *this.a * this.c);
 
@@ -129,44 +155,59 @@ class QuadraticEquation
         let x1 = (-this.b + Math.sqrt(discriminant)) / (2 * this.a); 
         let x2 = (-this.b - Math.sqrt(discriminant)) / (2 * this.a); 
         return [x1, x2]; 
+
+    }
+
+    showResult()
+    {
+
+        const roots = this.solve();
+
+        if (Array.isArray(roots)) {
+
+            if (roots.length == 1) {
+                console.log("Уравнение имеет один корень: " + roots[0]);
+                alert("Уравнение имеет один корень: " + roots[0]);
+            } else {
+                console.log("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
+                alert("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
+            }
+
+        } else {
+            console.log(roots);
+            alert(roots);
+        } 
+        
     }
 }
 
 try {
+
     let a = prompt("Введите коэффицент a:");
     let b = prompt("Введите коэффицент b:");
     let c = prompt("Введите коэффицент c:");
 
-    let equation = new QuadraticEquation(a, b, c);
-    let roots = equation.solve();
+    const equation = new QuadraticEquation(a, b, c);
 
-    if (Array.isArray(roots)) {
-        if (roots.length == 1) {
-            console.log("Уравнение имеет один корень: " + roots[0]);
-            alert("Уравнение имеет один корень: " + roots[0]);
-        } else {
-            console.log("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
-            alert("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
-        }
-    } else {
-        console.log(roots);
-        alert(roots);
-    } 
+    equation.showResult();
+
 } catch (e) {
-    if (e instanceof ZeroCoefficientException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
 
-    } else if (e instanceof NegativeDiscriminantException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
+    if (e instanceof InvalidQuadraticArgumentException) {
 
-    } else if (e instanceof InvalidQuadraticArgumentException) {
-        console.log("Ошибка: " + e.message);
-        alert("Ошибка: " + e.message);
+        e.showAlert();
+        e.logError();
+
+    } else if (e instanceof ZeroCoefficientException) {
+
+        e.showAlert();
+        e.logError();
 
     } else {
+
         console.log("Неизвестная ошибка: " + e.message);
         alert("Неизвестная ошибка: " + e.message);
+    
     }
+
 }
