@@ -11,19 +11,24 @@ require_once 'factorial_exception_classes.php';
 
 function factorial($n) 
 {
+    if (!$n) {
+        throw new FactorialNoNumberException
+        ("Аргумент не задан.", 1);
+    }
+
     if (!is_int($n)) {
         throw new FactorialNumberException
-        ("Аргумент должен быть целым числом.", 1);
+        ("Аргумент должен быть целым числом.", 2);
     }
 
     if ($n < 0) {
         throw new NegativeNumberException
-        ("Число должно быть неотрицательным.", 2);
+        ("Число должно быть неотрицательным.", 3);
     }
 
     if ($n > 20) {
         throw new BigNumberException
-        ("Число слишком большое для вычисления факториала.", 3);
+        ("Число слишком большое для вычисления факториала.", 4);
     }
 
     if ($n === 0) {
@@ -57,7 +62,12 @@ try {
     $e->logError();
 
 } catch (BigNumberException $e) {
-    
+     
+    echo $e->showError();
+    $e->logError();
+
+} catch (FactorialNoNumberException $e) {
+     
     echo $e->showError();
     $e->logError();
 
@@ -68,7 +78,7 @@ try {
 
 }
 
-echo "<br>";
+echo "<br><br>";
 
 /**
  * б) реализовать класс, находящий корни квадратного уравнения. 
@@ -99,15 +109,58 @@ class QuadraticEquation
     public function validateCoefficients() 
     { 
 
-        if (!is_numeric($this->a) || !is_numeric($this->b) || 
-        !is_numeric($this->c)) { 
+        if (!$this->a) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент а не задан", 1); 
+        } elseif (!$this->b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b не задан", 2); 
+        } elseif (!$this->c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент c не задан", 3); 
+        } elseif (!$this->a && !$this->b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и b не заданы", 4); 
+        } elseif (!$this->a && !$this->c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и c не заданы", 5); 
+        } elseif (!$this->b && !$this->c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b и c не заданы", 6); 
+        } elseif (!$this->a && !$this->b && !$this->c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a, c и b не заданы", 7); 
+        } 
+
+        if (!is_numeric($this->a)) {
             throw new InvalidQuadraticArgumentException
-            ("Коэффициенты должны быть числами", 1); 
+            ("Коэффицент а должен быть числом", 8); 
+        } elseif (!is_numeric($this->b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b должен быть числом", 9); 
+        } elseif (!is_numeric($this->c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент c должен быть числом", 10); 
+        } elseif (!is_numeric($this->a) && !is_numeric($this->b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и b должны быть числами", 11); 
+        } elseif (!is_numeric($this->a) && !is_numeric($this->c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и c должны быть числами", 12); 
+        } elseif (!is_numeric($this->b) && !is_numeric($this->c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b и c должны быть числами", 13); 
+        } elseif (!is_numeric($this->a) && !is_numeric($this->b) && !is_numeric($this->c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a, c и b должны быть числами", 14); 
         } 
 
         if ($this->a == 0) { 
             throw new ZeroCoefficientException
-            ("Коэффициент a не может быть равен 0", 2); 
+            ("Коэффициент a не может быть равен 0", 15); 
+        } elseif ($this->a == 0 && $this->b == 0 && $this->c == 0) { 
+            throw new ZeroCoefficientException
+            ("Коэффициент a,b и c равны 0", 16); 
         } 
     } 
  
@@ -118,9 +171,7 @@ class QuadraticEquation
  
         if ($discriminant < 0) { 
             return "Дискриминант отрицательный: нет корней"; 
-        } 
- 
-        if ($discriminant == 0) { 
+        } else if ($discriminant == 0) { 
             $x1 = -$this->b / (2 * $this->a); 
             return [$x1]; 
         } 
@@ -159,6 +210,11 @@ try {
     echo $equation->showResult(); 
  
 } catch (ZeroCoefficientException $e) { 
+    
+    echo $e->showError();
+    $e->logError();
+ 
+} catch (NoQuadraticArgumentException $e) { 
     
     echo $e->showError();
     $e->logError();

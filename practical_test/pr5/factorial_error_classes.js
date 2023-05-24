@@ -1,8 +1,11 @@
-class FactorialNumberException extends Error 
+class FactorialExceptions extends Error 
 {
+
     constructor(message, errorCode, additionalDetails = '') 
     {
         super(message);
+        this.name = this.constructor.name;
+        
         this.errorCode = errorCode;
         this.additionalDetails = additionalDetails;
     }
@@ -25,19 +28,6 @@ class FactorialNumberException extends Error
         return this.additionalDetails;
     }
 
-    showAlert() {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let alertMessage = `Ошибка вычисления факториала [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            alertMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        alert(alertMessage);
-    }
-
     logError() 
     {
         const errorMessage = this.message;
@@ -49,116 +39,48 @@ class FactorialNumberException extends Error
             logMessage += ` Дополнительные детали: ${additionalDetails}`;
         }
 
+        alert(logMessage)
         console.log(logMessage);
     }
+
+} 
+
+class FactorialNumberException extends FactorialExceptions 
+{
+
+    constructor(message, errorCode, additionalDetails = '') 
+    {
+        super(message, errorCode, additionalDetails = '');
+    }
+
 }
 
-class NegativeNumberException extends Error 
+class NegativeNumberException extends FactorialExceptions 
 {
+
     constructor(message, errorCode, additionalDetails = '') 
     {
-        super(message);
-        this.errorCode = errorCode;
-        this.additionalDetails = additionalDetails;
+        super(message, errorCode, additionalDetails = '');
     }
 
-    getCustomMessage() 
-    {
-        return "Ошибка вычисления факториала: " + this.message;
-    }
-
-    getErrorCode() 
-    {
-        return this.errorCode;
-    }
-
-    getAdditionalDetails() 
-    {
-        if (!this.additionalDetails) {
-            return "нет доп. деталей";
-        }
-        return this.additionalDetails;
-    }
-
-    showAlert() {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let alertMessage = `Ошибка вычисления факториала [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            alertMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        alert(alertMessage);
-    }
-
-    logError() 
-    {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let logMessage = `Ошибка вычисления факториала [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            logMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        console.log(logMessage);
-    }
 }
 
-class BigNumberException extends Error 
+class BigNumberException extends FactorialExceptions 
 {
+
     constructor(message, errorCode, additionalDetails = '') 
     {
-        super(message);
-        this.errorCode = errorCode;
-        this.additionalDetails = additionalDetails;
+        super(message, errorCode, additionalDetails = '');
     }
 
-    getCustomMessage() 
+}
+
+class FactorialNoNumberException extends FactorialExceptions 
+{
+
+    constructor(message, errorCode, additionalDetails = '') 
     {
-        return "Ошибка вычисления факториала: " + this.message;
+        super(message, errorCode, additionalDetails = '');
     }
 
-    getErrorCode() 
-    {
-        return this.errorCode;
-    }
-
-    getAdditionalDetails() 
-    {
-        if (!this.additionalDetails) {
-            return "нет доп. деталей";
-        }
-        return this.additionalDetails;
-    }
-
-    showAlert() {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let alertMessage = `Ошибка вычисления факториала [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            alertMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        alert(alertMessage);
-    }
-
-    logError() 
-    {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let logMessage = `Ошибка вычисления факториала [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            logMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        console.log(logMessage);
-    }
 }

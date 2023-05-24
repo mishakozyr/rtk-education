@@ -1,4 +1,5 @@
-try {
+
+try { 
     const numberOfArmies = promptInteger("Введите количество армий:");
     validatePositiveNumber(numberOfArmies, "Количество армий должно быть положительным числом.");
     if (numberOfArmies === 1) {
@@ -8,7 +9,7 @@ try {
     const game = new Game(armies);
 } catch (error) { 
     console.error(error); 
-}
+} 
 
 // если введенное значение не является числом, функция будет запрашивать число до тех пор, пока не будет получено корректное значение.
 function promptInteger(message) {

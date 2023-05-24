@@ -14,13 +14,17 @@ class Factorial
     constructor(n) 
     {
         this.n = parseInt(n);
-
         this.validateNumber();
     }
 
     validateNumber()
     {
         // typeof n !== "number"
+
+        if (!this.n || this.n == "NaN") {
+            throw new FactorialNoNumberException
+            ("Аргумент не задан.", 1);
+        }
 
         if (!Number.isInteger(this.n)) {
             throw new FactorialNumberException
@@ -34,7 +38,7 @@ class Factorial
 
         if (this.n > 20) {
             throw new BigNumberException
-            ("Число слишком большое для вычисления факториала.", 3);
+            ("Число слишком большое для вычисления факториала.", 4);
         }
     }
 
@@ -72,17 +76,18 @@ try {
 
     if (e instanceof FactorialNumberException) {
 
-        e.showAlert();
         e.logError();
 
     } else if (e instanceof NegativeNumberException) {
 
-        e.showAlert();
         e.logError();
 
     } else if (e instanceof BigNumberException) {
+ 
+        e.logError();
 
-        e.showAlert();
+    } else if (e instanceof FactorialNoNumberException) {
+ 
         e.logError();
 
     } else {
@@ -125,16 +130,59 @@ class QuadraticEquation
     validateCoefficients()
     {
 
-        if (!isNumber(this.a) || !isNumber(this.b) ||
-        !isNumber(this.c)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффициенты должны быть числами", 1); 
-        }
+        if (!this.a) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент а не задан", 1); 
+        } else if (!this.b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b не задан", 2); 
+        } else if (!this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент c не задан", 3); 
+        } else if (!this.a && !this.b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и b не заданы", 4); 
+        } else if (!this.a && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и c не заданы", 5); 
+        } else if (!this.b && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b и c не заданы", 6); 
+        } else if (!this.a && !this.b && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a, c и b не заданы", 7); 
+        } 
 
-        if (this.a == 0) {
+        if (!isNumber(this.a)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент а должен быть числом", 8); 
+        } else if (!isNumber(this.b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b должен быть числом", 9); 
+        } else if (!isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент c должен быть числом", 10); 
+        } else if (!isNumber(this.a) && !isNumber(this.b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и b должны быть числами", 11); 
+        } else if (!isNumber(this.a) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и c должны быть числами", 12); 
+        } else if (!isNumber(this.b) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b и c должны быть числами", 13); 
+        } else if (!isNumber(this.a) && !isNumber(this.b) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a, c и b должны быть числами", 14); 
+        } 
+
+        if (this.a == 0) { 
             throw new ZeroCoefficientException
-            ("Коэффициент a не может быть равен 0", 2); 
-        }
+            ("Коэффициент a не может быть равен 0", 15); 
+        } else if (this.a == 0 && this.b == 0 && this.c == 16) { 
+            throw new ZeroCoefficientException
+            ("Коэффициент a, b и c равны 0", 3); 
+        } 
 
     }
 
@@ -145,9 +193,7 @@ class QuadraticEquation
 
         if (discriminant < 0) {
             return "Дискриминант отрицательный: нет корней"; 
-        }
-
-        if (discriminant == 0) { 
+        } else if (discriminant == 0) { 
             let x1 = -this.b / (2 * this.a); 
             return [x1]; 
         } 
@@ -193,14 +239,16 @@ try {
 
 } catch (e) {
 
-    if (e instanceof InvalidQuadraticArgumentException) {
+    if (e instanceof NoQuadraticArgumentException) {
 
-        e.showAlert();
+        e.logError();
+
+    } else if (e instanceof InvalidQuadraticArgumentException) {
+
         e.logError();
 
     } else if (e instanceof ZeroCoefficientException) {
 
-        e.showAlert();
         e.logError();
 
     } else {

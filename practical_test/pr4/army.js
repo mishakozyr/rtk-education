@@ -1,73 +1,70 @@
 class Army {
-  constructor(name, quantityArmyUnits) {
-    this._army_name = name;
-    this._army_units = [];
-    this._quantity_army_units = quantityArmyUnits;
-    this._generateUnits(quantityArmyUnits);
-  };
 
-  set army_name(value) {
-    this._army_name = value;
+  #army_name;
+  #army_units = [];
+  #quantity_army_units;
+
+  constructor(name, quantityArmyUnits) {
+    this.#army_name = name;
+    this.#quantity_army_units = quantityArmyUnits;
+    this.#generateUnits(quantityArmyUnits);
   };
+   
+  set army_name(value) { this.#army_name = value }
+  get army_name() { return this.#army_name };
+
+  set army_units(value) { this.#army_units = value };
+  get army_units() { return this.#army_units };
+
+  set quantity_army_units(value) { this.#quantity_army_units = value };
+  get quantity_army_units() { return this.#quantity_army_units };
   
-  get army_name() {
-    return this._army_name;
-  };
-  
-  get army_units() {
-    return this._army_units;
-  };
-  
-  get quantity_army_units() {
-    return this._quantity_army_units;
-  };
-  
-  _getRandUnit() {
-    const randIndex = Math.floor(Math.random() * this._army_units.length);
-    const randUnit = this._army_units[randIndex];
+  getRandUnit() {
+    const randIndex = Math.floor(Math.random() * this.army_units.length);
+    const randUnit = this.army_units[randIndex];
     return randUnit;
   };
   
-  _getSurvivorUnits() {
-    const survivor_units = this._army_units
-    .filter(unit => unit._unit_status === "active")
-    .map(unit => unit._unit_name);
-    if (survivor_units.length === 0) { return 0; }
+  getSurvivorUnits() {
+    const survivor_units = this.army_units
+    .filter(unit => unit.status === "active")
+    .map(unit => unit.name);
+    if (!survivor_units.length) { return 0; }
 
     return survivor_units;
   };
 
-  _getDeceasedUnits() {
-    const deceased_units = this._army_units
-    .filter(unit => unit._unit_status === "destroy")
-    .map(unit => unit._unit_name);
-    if (deceased_units.length === 0) { return 0; }
+  getDeceasedUnits() {
+    const deceased_units = this.army_units
+    .filter(unit => unit.status === "destroy")
+    .map(unit => unit.name);
+    if (!deceased_units.length) { return 0; }
 
     return deceased_units;
   };
 
-  _getUnitsHealth() {
-    return this._army_units.reduce((totalHealth, unit) => {
-      if (unit._unit_status !== "destroy") {
-        return totalHealth + unit._unit_health;
+  getUnitsHealth() {
+    return this.army_units.reduce((totalHealth, unit) => {
+      if (unit.status !== "destroy") {
+        return totalHealth + unit.health;
       }
       return totalHealth;
     }, 0);
   };
   
-  _generateUnits(quantityArmyUnits) {
+  #generateUnits(quantityArmyUnits) {
     Array.from({ length: quantityArmyUnits }).forEach(() => {
-      this._army_units.push(new Unit());
+      this.army_units.push(new Unit());
     });
   };
   
-  _recoveryUnits() {
-    for (const unit of this._army_units) {
-      unit._recovery();
+  recoveryUnits() {
+    for (const unit of this.army_units) {
+      unit.recovery();
     }
   };
   
-  _checkArmy() {
-    return this._army_units.every(unit => unit._unit_status === "destroy");
+  checkArmy() {
+    return this.army_units.every(unit => unit.status === "destroy");
   };
 }

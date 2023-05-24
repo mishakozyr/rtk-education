@@ -1,8 +1,11 @@
-class InvalidQuadraticArgumentException extends Error 
+class QuadraticExceptions extends Error 
 {
+
     constructor(message, errorCode, additionalDetails = '') 
-    {
+    { 
         super(message);
+        this.name = this.constructor.name;
+
         this.errorCode = errorCode;
         this.additionalDetails = additionalDetails;
     }
@@ -25,19 +28,6 @@ class InvalidQuadraticArgumentException extends Error
         return this.additionalDetails;
     }
 
-    showAlert() {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let alertMessage = `Ошибка вычисления квадратного уравнения [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            alertMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        alert(alertMessage);
-    }
-
     logError() 
     {
         const errorMessage = this.message;
@@ -49,61 +39,39 @@ class InvalidQuadraticArgumentException extends Error
             logMessage += ` Дополнительные детали: ${additionalDetails}`;
         }
 
+        alert(logMessage);
         console.log(logMessage);
     }
+
 }
 
-class ZeroCoefficientException extends Error 
+
+class InvalidQuadraticArgumentException extends QuadraticExceptions 
 {
+
     constructor(message, errorCode, additionalDetails = '') 
-    {
-        super(message);
-        this.errorCode = errorCode;
-        this.additionalDetails = additionalDetails;
+    { 
+        super(message, errorCode, additionalDetails = '');
     }
 
-    getCustomMessage() 
-    {
-        return "Ошибка вычисления квадратного уравнения: " + this.message;
+}
+
+class ZeroCoefficientException extends QuadraticExceptions 
+{
+    
+    constructor(message, errorCode, additionalDetails = '') 
+    { 
+        super(message, errorCode, additionalDetails = '');
     }
 
-    getErrorCode() 
-    {
-        return this.errorCode;
+}
+
+class NoQuadraticArgumentException extends QuadraticExceptions 
+{
+    
+    constructor(message, errorCode, additionalDetails = '') 
+    { 
+        super(message, errorCode, additionalDetails = '');
     }
-
-    getAdditionalDetails() 
-    {
-        if (!this.additionalDetails) {
-            return "нет доп. деталей";
-        }
-        return this.additionalDetails;
-    }
-
-    showAlert() {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let alertMessage = `Ошибка вычисления квадратного уравнения [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            alertMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        alert(alertMessage);
-    }
-
-    logError() 
-    {
-        const errorMessage = this.message;
-        const errorCode = this.errorCode;
-        const additionalDetails = this.additionalDetails;
-
-        let logMessage = `Ошибка вычисления квадратного уравнения [${errorCode}]: ${errorMessage}`;
-        if (additionalDetails) {
-            logMessage += ` Дополнительные детали: ${additionalDetails}`;
-        }
-
-        console.log(logMessage);
-    }
+    
 }

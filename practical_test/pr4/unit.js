@@ -1,64 +1,51 @@
-class Unit {
-  constructor() { 
-    this._unit_health = 100;
-    this._unit_damage = Unit.generateRandomNumber(5, 45);
-    this._unit_status = "active";
-    this._unit_name = Unit.generationName();
-  };
+class Unit { 
 
-  set health(value) {
-    this._unit_health = value;
-  };
+  #unit_health;
+  #unit_damage;
+  #unit_status;
+  #unit_name;
+
+  constructor()
+  {
+    this.#unit_health = 100;
+    this.#unit_damage = this.#generateRandomNumber(5, 45);
+    this.#unit_status = "active";
+    this.#unit_name = this.#generationName();
+  }
   
-  get health() {
-    return this._unit_health;
-  };
+  set health(value) { this.#unit_health = value }
+  get health() { return this.#unit_health };
 
-  set damage(value) {
-    this._unit_damage = value;
-  };
+  set damage(value) { this.#unit_damage = value }
+  get damage() { return this.#unit_damage };
+  
+  set status(value) { this.#unit_status = value }
+  get status() { return this.#unit_status };
+  
+  set name(value) { this.#unit_name = value }
+  get name() { return this.#unit_name };
 
-  get damage() {
-    return this._unit_damage;
-  };
-
-  set status(value) {
-    this._unit_status = value;
-  };
-
-  get status() {
-    return this._unit_status;
-  };
-
-  set name(value) {
-    this._unit_name = value;
-  };
-
-  get name() {
-    return this._unit_name;
-  };
-
-  _hit(defender) {
-    if (this._unit_health > 0) {
-      defender._unit_health -= this._unit_damage;
-      this._checkHealthStatus(defender);
+  hit(defender) {
+    if (this.health > 0) {
+      defender.health -= this.damage;
+      this.#checkHealthStatus(defender);
     }
   };
 
-  _recovery() {
-    if (this._unit_health < 100) {
-      this._unit_health = 100;
-      this._unit_status = "active";
+  recovery() {
+    if (this.health < 100) {
+      this.health = 100;
+      this.status = "active";
     }
   };
 
-  _checkHealthStatus(defender) {
-    if (defender._unit_health < 1) {
-      defender._unit_status = "destroy";
+  #checkHealthStatus(defender) {
+    if (defender.health < 1) {
+      defender.status = "destroy";
     }
   };
 
-  static generationName() {
+  #generationName() {
     const first_part = [
       "Добро", "Тихо", "Рати", "Пути", "Яро", "Госто", "Вели",
       "Свято", "Все", "Бог", "Любо", "Миро", "Свето"
@@ -76,7 +63,7 @@ class Unit {
     return randomFirstPart + randomEndPart;
   };
   
-  static generateRandomNumber(min, max) {
+  #generateRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 }

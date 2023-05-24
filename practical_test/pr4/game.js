@@ -1,79 +1,78 @@
 class Game {
+    
+    #armies;
+    #wins = {}; // объект для хранения побед каждой армии
+
     constructor(armies) {
-        this._armies = armies;
-        this._wins = {}; // объект для хранения побед каждой армии
+        this.#armies = armies;
 
-        this._play();
-    };
+        this.#play();
+    }; 
 
-    get armies() {
-        return this._armies;
-    };
+    get armies() { return this.#armies };
+    set wins(value) { this.#wins = value };
+    get wins() { return this.#wins };
 
-    get _wins() {
-        return this._wins;
-    };
-
-    _play() {
+    #play() {
         let start_message = `Начало игры\n\nОбщая информация по игре:\n\n` +
-        `Всего армий: ${this._getAllArmies()}`;
-        this._log(start_message, 1);
+        `Всего армий: ${this.#getAllArmies()}`;
+        this.#log(start_message, 1);
 
         for (let i = 1; i <= 3; i++) {
-            this._log(`раунд - ${i}`, 1);
-            this._round();
+            this.#log(`раунд - ${i}`, 1);
+            this.#round();
         }
 
         let end_message = `Конец игры\n\nОбщая информация по игре:\n\n` +
-        `${this._displayWins()}\n\n` +
-        `Итог всей игры: ${this._getArmyWithMostWins()}`;
-        this._log(end_message, 1);
+        `${this.#displayWins()}\n\n` +
+        `Итог всей игры: ${this.#getArmyWithMostWins()}`;
+        this.#log(end_message, 1);
     };
 
-    _round() {
-        // console.log(this._wins);
+    #round() {
+        // console.log(this.#wins);
         
         let motion_id = 1;
         let round = true;
 
         while (round) {
-            this._log(`ход ${motion_id}:\n`);
+            this.#log(`ход ${motion_id}:\n`);
     
-            let attacker = this._getRandomArmy();
-            let defender = this._getRandomArmy();
+            let attacker = this.#getRandomArmy();
+            let defender = this.#getRandomArmy();
 
             while (attacker === defender) {
-                defender = this._getRandomArmy();
+                defender = this.#getRandomArmy();
             }
     
-            const attackingUnit = attacker._getRandUnit();
-            const defendingUnit = defender._getRandUnit();
+            const attackingUnit = attacker.getRandUnit();
+            const defendingUnit = defender.getRandUnit();
     
-            this._log(`Атакующий: ${attackingUnit._unit_name}` +
-                `(Здоровье: ${attackingUnit._unit_health}, Урон: ${attackingUnit._unit_damage}, Армия: ${attacker._army_name})`);
-            this._log(`Защищающийся: ${defendingUnit._unit_name}` +
-                `(Здоровье: ${defendingUnit._unit_health}, Урон: ${defendingUnit._unit_damage}, Армия: ${defender._army_name})`);
+            this.#log(`Атакующий: ${attackingUnit.name}` +
+                `(Здоровье: ${attackingUnit.health}, Урон: ${attackingUnit.damage}, Армия: ${attacker.army_name})`);
+            this.#log(`Защищающийся: ${defendingUnit.name}` +
+                `(Здоровье: ${defendingUnit.health}, Урон: ${defendingUnit.damage}, Армия: ${defender.army_name})`);
     
-            attackingUnit._hit(defendingUnit);
+            attackingUnit.hit(defendingUnit);
     
-            if (defender._checkArmy()) {
-                let win_message = `Победила армия: "${attacker._army_name}"\n` +
-                `выжившие юниты этой армии: ${attacker._getSurvivorUnits()}\n` +
-                `их общее оставшееся здоровье: ${attacker._getUnitsHealth()}\n` +
-                `погибшие юниты этой армии: ${attacker._getDeceasedUnits()}`;
+            if (defender.checkArmy()) {
+                let win_message = `Победила армия: "${attacker.army_name}"\n` +
+                `выжившие юниты этой армии: ${attacker.getSurvivorUnits()}\n` +
+                `их общее оставшееся здоровье: ${attacker.getUnitsHealth()}\n` +
+                `погибшие юниты этой армии: ${attacker.getDeceasedUnits()}`;
     
-                this._log(win_message, 1);
+                this.#log(win_message, 1);
     
-                if (this._wins.hasOwnProperty(attacker._army_name)) {
+                if (this.wins.hasOwnProperty(attacker.army_name)) {
                 // увеличить счетчик побед для армии
-                this._wins[attacker._army_name]++;
+                this.wins[attacker.army_name]++;
                 } else {
                 // установить счетчик побед для армии в 1
-                this._wins[attacker._army_name] = 1;
+                this.wins[attacker.army_name] = 1;
                 }
     
-                this._armies.forEach((army) => {
-                    army._recoveryUnits();
+                this.armies.forEach((army) => {
+                    army.recoveryUnits();
                 });
                 
                 round = false;
@@ -83,29 +82,29 @@ class Game {
         }
     };
 
-    _getRandomArmy = function() {
-        const randomArmies = this._armies.filter(army => 
-            !army._checkArmy());
+    #getRandomArmy = function() {
+        const randomArmies = this.armies.filter(army => 
+            !army.checkArmy());
         const randomIndex = Math.floor(Math.random() * randomArmies.length);
         const randomArmy = randomArmies[randomIndex];
 
         return randomArmy;
     };
 
-    _getAllArmies() {
+    #getAllArmies() {
         let all_armies = [];
-        for (const army of this._armies) {
-            all_armies.push(army._army_name);
+        for (const army of this.armies) {
+            all_armies.push(army.army_name);
         }
         return all_armies;
     };
 
-    _getArmyWithMostWins() {
+    #getArmyWithMostWins() {
         let maxWins = 0;
         let armies_most_wins;
 
-        for (const armyName in this._wins) {
-            const value = this._wins[armyName];
+        for (const armyName in this.wins) {
+            const value = this.wins[armyName];
             
             if (value > maxWins) {
                 maxWins = value;
@@ -124,24 +123,24 @@ class Game {
           }
     };
 
-    _displayWins() {
+    #displayWins() {
         let wins_message = "Все победы армий:\n";
 
-        Object.entries(this._wins).forEach(([army_name, wins]) => {
+        Object.entries(this.wins).forEach(([army_name, wins]) => {
             wins_message += `${army_name}: ${wins} побед\n`;
         });
 
         return wins_message;
     };
 
-    _getRandomDefender(attacker) {
-        const defenders = this._armies.filter(army => army !== attacker && 
-            !army._checkArmy());
-        const randomIndex = Math.floor(Math.random() * defenders.length);
-        return defenders[randomIndex];
-    };
+    // #getRandomDefender(attacker) {
+    //     const defenders = this.#armies.filter(army => army !== attacker && 
+    //         !army.#checkArmy());
+    //     const randomIndex = Math.floor(Math.random() * defenders.length);
+    //     return defenders[randomIndex];
+    // };
   
-    _log(message, alert_vkl = 0) {
+    #log(message, alert_vkl = 0) {
         if (alert_vkl === 0) {
             console.log(message);
         } else if (alert_vkl === 1) {
