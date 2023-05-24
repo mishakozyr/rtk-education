@@ -65,3 +65,7 @@ h2 {
 .error-message {
     color: red;
 }
+
+.message {
+    color: #2d2d2f;
+}

@@ -75,5 +75,7 @@
         <div id="occurrencesResult"></div>
     </div>
 
+    <?php require_once "count.php"; ?>
+
 </body>
 </html>

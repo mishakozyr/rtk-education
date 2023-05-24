@@ -6,11 +6,17 @@ echo '1. ';
 function factorial($num)
 {
     $res = false;
+
     if (is_int($num) && ($num > 0)) {
+
         $res = $num * factorial($num - 1);
+
     } elseif ($num == 0) {
+
         $res = 1;
+
     }
+    
     return $res;
 }
 

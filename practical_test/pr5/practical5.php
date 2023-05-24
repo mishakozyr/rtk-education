@@ -10,7 +10,7 @@ require_once 'factorial_exception_classes.php';
  */
 
 function factorial($n) 
-{
+{ 
 
     if ($n === 0) {
 
@@ -21,10 +21,15 @@ function factorial($n)
         throw new NoNumberException 
         ("Аргумент не задан.", 1);
 
-    } elseif (!is_int($n)) {
+    } elseif (is_float($n)) {
 
         throw new NumberException
         ("Аргумент должен быть целым числом.", 2);
+
+    } elseif (!is_int($n)) {
+
+        throw new NumberException
+        ("Аргумент должен быть числом.", 2);
 
     } elseif ($n < 0) {
 
@@ -38,49 +43,86 @@ function factorial($n)
 
     } else {
 
-        $factorial = 1;
-
-        for ($i = 1; $i <= $n; $i++) {
-            $factorial *= $i;
-        }
-
-        return $factorial;
+        return $n * factorial($n - 1);
 
     }
     
 }
  
-try {
+// try {
 
-    $n = 5;
+//     $n = 0;
 
-    $result = factorial($n);
-    echo "Факториал числа $n равен $result";
+//     $result = factorial($n);
+//     echo "Факториал числа $n равен $result";
 
-} catch (NumberException $e) {
+// } catch (NumberException $e) {
 
-    echo $e->showError();
-    $e->logError();
+//     echo $e->showError();
+//     $e->logError();
 
-} catch (NegativeNumberException $e) {
+// } catch (NegativeNumberException $e) {
     
-    echo $e->showError();
-    $e->logError();
+//     echo $e->showError();
+//     $e->logError();
 
-} catch (BigNumberException $e) {
+// } catch (BigNumberException $e) {
      
-    echo $e->showError();
-    $e->logError();
+//     echo $e->showError();
+//     $e->logError();
 
-} catch (NoNumberException $e) {
+// } catch (NoNumberException $e) {
      
-    echo $e->showError();
-    $e->logError();
+//     echo $e->showError();
+//     $e->logError();
 
-} catch (Exception $e) {
+// } catch (Exception $e) {
 
-    echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
-    $e->getMessage() . "</span>";
+//     echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+//     $e->getMessage() . "</span>";
+
+// }
+
+$arrf = [-100, 'a', '', null, [1, 1], 3.1, -1, 0, 1, 5, 10, 100];
+
+foreach ($arrf as $el) {
+
+    try {
+
+        $result = factorial($el);
+        echo "Факториал числа $el равен $result<br>";
+
+    } catch (NumberException $e) {
+
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+
+    } catch (NegativeNumberException $e) {
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+
+    } catch (BigNumberException $e) {
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+
+    } catch (NoNumberException $e) {
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+
+    } catch (Exception $e) {
+
+        echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+        $e->getMessage() . "</span>";
+        echo "<br>";
+
+    }
 
 }
 
@@ -115,73 +157,90 @@ class QuadraticEquation
     public function validateCoefficients() 
     { 
 
-        if ($this->a === 0 && $this->b === 0 && $this->c === 0) { 
+        if ($this->a === null && $this->b === null && $this->c === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент a, c и b не заданы", 3); 
+
+        } elseif ($this->a === null && $this->b === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент a и b не заданы", 4); 
+
+        } elseif ($this->a === null && $this->c === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент a и c не заданы", 5); 
+
+        } elseif ($this->b === null && $this->c === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент b и c не заданы", 6); 
+
+        } elseif ($this->a === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент а не задан", 7); 
+
+        } elseif ($this->b === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент b не задан", 8); 
+
+        } elseif ($this->c === null) {
+
+            throw new NoQuadraticArgumentException
+            ("Коэффициент c не задан", 9); 
+
+        } 
+
+        if ($this->a == 0 && $this->b == 0 && $this->c == 0) { 
+
             throw new ZeroCoefficientException
             ("Коэффициент a,b и c равны 0", 1); 
-        } 
-        if ($this->a === 0) { 
+
+        } elseif ($this->a == 0) { 
+
             throw new ZeroCoefficientException
             ("Коэффициент a не может быть равен 0", 2); 
-        } 
 
-
-        if ($this->a === null && $this->b === null && $this->c === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a, c и b не заданы", 3); 
         } 
-        if ($this->a === null && $this->b === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a и b не заданы", 4); 
-        } 
-        if ($this->a === null && $this->c === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a и c не заданы", 5); 
-        } 
-        if ($this->b === null && $this->c === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент b и c не заданы", 6); 
-        }
-        if ($this->a === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент а не задан", 7); 
-        } 
-        if ($this->b === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент b не задан", 8); 
-        } 
-        if ($this->c === null) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент c не задан", 9); 
-        } 
-
 
         if (!is_numeric($this->a) && !is_numeric($this->b) && !is_numeric($this->c)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент a, c и b должны быть числами", 16); 
-        } 
-        if (!is_numeric($this->a) && !is_numeric($this->b)) {
+            ("Коэффициент a, c и b должны быть числами", 16); 
+
+        } elseif (!is_numeric($this->a) && !is_numeric($this->b)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент a и b должны быть числами", 13); 
-        } 
-        if (!is_numeric($this->a) && !is_numeric($this->c)) {
+            ("Коэффициент a и b должны быть числами", 13); 
+
+        } elseif (!is_numeric($this->a) && !is_numeric($this->c)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент a и c должны быть числами", 14); 
-        } 
-        if (!is_numeric($this->b) && !is_numeric($this->c)) {
+            ("Коэффициент a и c должны быть числами", 14); 
+
+        } elseif (!is_numeric($this->b) && !is_numeric($this->c)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент b и c должны быть числами", 15); 
-        } 
-        if (!is_numeric($this->a)) {
+            ("Коэффициент b и c должны быть числами", 15); 
+
+        } elseif (!is_numeric($this->a)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент а должен быть числом", 10); 
-        } 
-        if (!is_numeric($this->b)) {
+            ("Коэффициент а должен быть числом", 10); 
+
+        } elseif (!is_numeric($this->b)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент b должен быть числом", 11); 
-        } 
-        if (!is_numeric($this->c)) {
+            ("Коэффициент b должен быть числом", 11); 
+
+        } elseif (!is_numeric($this->c)) {
+
             throw new InvalidQuadraticArgumentException
-            ("Коэффицент c должен быть числом", 12); 
+            ("Коэффициент c должен быть числом", 12); 
+
         } 
 
     } 
@@ -192,143 +251,161 @@ class QuadraticEquation
         $discriminant = ($this->b ** 2) - (4 * $this->a * $this->c); 
  
         if ($discriminant < 0) { 
+
             return "Дискриминант отрицательный: нет корней"; 
-        } 
-        if ($discriminant == 0) { 
+
+        } elseif ($discriminant == 0) { 
+
             $x1 = -$this->b / (2 * $this->a); 
             return [$x1]; 
+
         } 
  
         $x1 = (-$this->b + sqrt($discriminant)) / (2 * $this->a); 
         $x2 = (-$this->b - sqrt($discriminant)) / (2 * $this->a); 
         return [$x1, $x2]; 
+
     } 
 
     public function showResult()
     {
+
         $roots = $this->solve(); 
  
         if (is_array($roots)) { 
 
-            if (count($roots) == 1) { 
+            if (count($roots) == 1) {
+
                 return "Уравнение имеет один корень: " . $roots[0]; 
     
             } else { 
+
                 return "Уравнение имеет два корня: " . $roots[0] . ", " .
                 $roots[1]; 
+
             } 
     
         } else { 
-            return $roots; 
+
+            return $roots;
+
         } 
 
     }
 
 } 
  
-try { 
+// try { 
 
-    $equation = new QuadraticEquation(0, 0, 0); 
+//     $equation = new QuadraticEquation(0, 0, 0); 
 
-    echo $equation->showResult(); 
+//     echo $equation->showResult(); 
 
  
-} catch (ZeroCoefficientException $e) { 
+// } catch (ZeroCoefficientException $e) { 
     
-    echo $e->showError();
-    $e->logError();
-    echo "<br>";
+//     echo $e->showError();
+//     $e->logError();
+//     echo "<br>";
  
-} catch (NoQuadraticArgumentException $e) { 
+// } catch (NoQuadraticArgumentException $e) { 
     
-    echo $e->showError();
-    $e->logError();
-    echo "<br>";
+//     echo $e->showError();
+//     $e->logError();
+//     echo "<br>";
  
-} catch (InvalidQuadraticArgumentException $e) {
+// } catch (InvalidQuadraticArgumentException $e) {
     
-    echo $e->showError();
-    $e->logError();
-    echo "<br>";
+//     echo $e->showError();
+//     $e->logError();
+//     echo "<br>";
 
-} catch (Exception $e) {
+// } catch (Exception $e) {
 
-    echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
-    $e->getMessage() . "</span>";
-    echo "<br>";
-
-}
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// $arr = [
-//     [1, 1, 1],
-//     [0, 1, 1],
-//     [1, 0, 1],
-//     [1, 1, 0],
-//     [0, 0, 1],
-//     [1, 0, 0],
-//     [0, 0, 0],
-//     ['a', 1, 1],
-//     [1, 'b', 1],
-//     [1, 1, 'c'],
-//     ['a', 'b', 1],
-//     [1, 'b', 'c'],
-//     ['a', 'b', 'c'],
-//     [null, 1, 1],
-//     [1, null, 1],
-//     [1, 1, null],
-//     [null, null, 1],
-//     [1, null, null],
-//     [null, null, null]
-// ];
-
-
-// foreach ($arr as $el) {
-//     try { 
-//     $a = $el[0];
-//     $b = $el[1];
-//     $c = $el[2];
-
-//     $eq = new QuadraticEquation($a, $b, $c);
-//     echo $eq->showResult()."<br>";
-
-//     } catch (ZeroCoefficientException $e) { 
-        
-//         echo $e->showError();
-//         $e->logError();
-//         echo "<br>";
-    
-//     } catch (NoQuadraticArgumentException $e) { 
-        
-//         echo $e->showError();
-//         $e->logError();
-//         echo "<br>";
-    
-//     } catch (InvalidQuadraticArgumentException $e) {
-        
-//         echo $e->showError();
-//         $e->logError();
-//         echo "<br>";
-
-//     } catch (Exception $e) {
-
-//         echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
-//         $e->getMessage() . "</span>";
-//         echo "<br>";
-
-//     }
+//     echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+//     $e->getMessage() . "</span>";
+//     echo "<br>";
 
 // }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$arrq = [
+    [1, 1, 1],
+    [0, 1, 1],
+    [1, 0, 1],
+    [1, 1, 0],
+    [0, 0, 1],
+    [0, 1, 0],
+    [1, 0, 0],
+    [0, 0, 0],
+    ['a', 1, 1],
+    [1, 'b', 1],
+    [1, 1, 'c'],
+    ['a', 'b', 1],
+    [1, 'b', 'c'],
+    ['a', 'b', 'c'],
+    [null, 1, 1],
+    [1, null, 1],
+    [1, 1, null],
+    [null, null, 1],
+    [1, null, null],
+    [null, 1, null],
+    [null, null, null],
+];
+
+
+foreach ($arrq as $el) {
+
+    try { 
+        
+        $a = $el[0];
+        $b = $el[1];
+        $c = $el[2];
+
+        echo "$a $b $c - ";
+
+
+
+        $eq = new QuadraticEquation($a, $b, $c);
+        echo $eq->showResult()."<br>";
+
+    } catch (ZeroCoefficientException $e) { 
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+    
+    } catch (NoQuadraticArgumentException $e) { 
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+    
+    } catch (InvalidQuadraticArgumentException $e) {
+        
+        echo $e->showError();
+        $e->logError();
+        echo "<br>";
+
+    } catch (Exception $e) {
+
+        echo "<span style='color: red;'>Произошла неизвестная ошибка: " . 
+        $e->getMessage() . "</span>";
+        echo "<br>";
+
+    }
+
+}

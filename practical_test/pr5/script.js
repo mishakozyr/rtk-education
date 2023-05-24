@@ -13,49 +13,69 @@ class Factorial
 
     constructor(n) 
     {
+
         this.n = parseInt(n);
         this.validateNumber();
+
     }
 
     validateNumber()
     {
 
         if (this.n === 0) {
+
             return 1;
+
         } else if (!this.n) {
+
             throw new NoNumberException
             ("Аргумент не задан.", 1);
+
         } else if (!Number.isInteger(this.n)) {
+
             throw new NumberException
-            ("Коэффицент должен быть целым числом", 2);
-        } else if (this.n < 0) {
+            ("Коэффицент должен быть числом", 2);
+
+        } else if (this.n < 0) { 
+
             throw new NegativeNumberException
             ("Коэффицент должен быть неотрицательным числом", 3);
+
         } else if (this.n > 20) {
+
             throw new BigNumberException
             ("Число слишком большое для вычисления факториала.", 4);
+
         }
+
     }
 
     compute() 
     {
+
         let result = 1;
 
         for (let i = 2; i <= this.n; i++) {
+
             result *= i;
+
         }
 
         return result;
+
     }
 
     showResult()
     {
+
         const number = this.n;
         const factorial = this.compute();
 
         console.log(`${number}! = ${factorial}`);
         alert(`${number}! = ${factorial}`);
+
     }
+
 }
 
 try {
@@ -64,7 +84,6 @@ try {
     ("Введите целое неотрицательное число для вычисления факториала:");
 
     const equation = new Factorial(number);
-
     equation.showResult();
 
 } catch (e) {
@@ -106,11 +125,14 @@ try {
 
 function isNumber(num) 
 {
+
 	return typeof num === 'number' && !isNaN(num);
+
 }
 
 class QuadraticEquation
 {
+
     constructor(a, b, c) 
     {
 
@@ -126,72 +148,92 @@ class QuadraticEquation
     {
 
         if (this.a == 0 && this.b == 0 && this.c == 0) { 
+
             throw new ZeroCoefficientException
             ("Коэффициент a, b и c равны 0", 1); 
-        } 
-        if (this.a == 0) { 
+
+        } else if (this.a == 0) { 
+
             throw new ZeroCoefficientException
             ("Коэффициент a не может быть равен 0", 2); 
+
         }
 
 
         if (!this.a && !this.b && !this.c) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент a, c и b не заданы", 3); 
-        }
-        if (!this.a && !this.b) {
+
+        } else if (!this.a && !this.b) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент a и b не заданы", 4); 
-        }
-        if (!this.a && !this.c) {
+
+        } else if (!this.a && !this.c) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент a и c не заданы", 5); 
-        }
-        if (!this.b && !this.c) {
+
+        } else if (!this.b && !this.c) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент b и c не заданы", 6); 
-        }
-        if (!this.a) {
+
+        } else if (!this.a) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент а не задан", 7); 
-        }
-        if (!this.b) {
+
+        } else if (!this.b) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент b не задан", 8); 
-        }
-        if (!this.c) {
+
+        } else if (!this.c) {
+
             throw new NoQuadraticArgumentException
             ("Коэффицент c не задан", 9); 
+
         }
 
 
-        if (!isNumber(this.a) && !isNumber(this.b) && !isNumber(this.c)) {
+        if (!isNumber(this.a) && !isNumber(this.b) 
+        && !isNumber(this.c)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент a, c и b должны быть числами", 16); 
-        } 
-        if (!isNumber(this.a) && !isNumber(this.b)) {
+
+        } else if (!isNumber(this.a) && !isNumber(this.b)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент a и b должны быть числами", 13); 
-        }
-        if (!isNumber(this.a) && !isNumber(this.c)) {
+
+        } else if (!isNumber(this.a) && !isNumber(this.c)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент a и c должны быть числами", 14); 
-        }
-        if (!isNumber(this.b) && !isNumber(this.c)) {
+
+        } else if (!isNumber(this.b) && !isNumber(this.c)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент b и c должны быть числами", 15); 
-        }
-        if (!isNumber(this.a)) {
+
+        } else if (!isNumber(this.a)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент а должен быть числом", 10); 
-        }
-        if (!isNumber(this.b)) {
+
+        } else if (!isNumber(this.b)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент b должен быть числом", 11); 
-        }
-        if (!isNumber(this.c)) {
+
+        } else if (!isNumber(this.c)) {
+
             throw new InvalidQuadraticArgumentException
             ("Коэффицент c должен быть числом", 12); 
+
         }
 
     }
@@ -202,10 +244,14 @@ class QuadraticEquation
         let discriminant = (this.b ** 2) - (4 *this.a * this.c);
 
         if (discriminant < 0) {
+
             return "Дискриминант отрицательный: нет корней"; 
+
         } else if (discriminant == 0) { 
+
             let x1 = -this.b / (2 * this.a); 
             return [x1]; 
+
         } 
 
         let x1 = (-this.b + Math.sqrt(discriminant)) / (2 * this.a); 
@@ -222,19 +268,28 @@ class QuadraticEquation
         if (Array.isArray(roots)) {
 
             if (roots.length == 1) {
+
                 console.log("Уравнение имеет один корень: " + roots[0]);
                 alert("Уравнение имеет один корень: " + roots[0]);
+
             } else {
-                console.log("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
-                alert("Уравнение имеет два корня: " + roots[0] + ", " + roots[1]);
+
+                console.log("Уравнение имеет два корня: " + 
+                roots[0] + ", " + roots[1]);
+                alert("Уравнение имеет два корня: " + roots[0] + 
+                ", " + roots[1]);
+            
             }
 
         } else {
+
             console.log(roots);
             alert(roots);
+
         } 
         
     }
+    
 }
 
 try {
