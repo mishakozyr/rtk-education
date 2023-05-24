@@ -1,4 +1,4 @@
-class FactorialExceptions extends Error 
+class ValidateFactorialException extends Error 
 {
 
     constructor(message, errorCode, additionalDetails = '') 
@@ -45,7 +45,7 @@ class FactorialExceptions extends Error
 
 } 
 
-class FactorialNumberException extends FactorialExceptions 
+class NumberException extends ValidateFactorialException 
 {
 
     constructor(message, errorCode, additionalDetails = '') 
@@ -55,7 +55,7 @@ class FactorialNumberException extends FactorialExceptions
 
 }
 
-class NegativeNumberException extends FactorialExceptions 
+class NegativeNumberException extends ValidateFactorialException 
 {
 
     constructor(message, errorCode, additionalDetails = '') 
@@ -65,7 +65,7 @@ class NegativeNumberException extends FactorialExceptions
 
 }
 
-class BigNumberException extends FactorialExceptions 
+class BigNumberException extends ValidateFactorialException 
 {
 
     constructor(message, errorCode, additionalDetails = '') 
@@ -75,7 +75,7 @@ class BigNumberException extends FactorialExceptions
 
 }
 
-class FactorialNoNumberException extends FactorialExceptions 
+class NoNumberException extends ValidateFactorialException 
 {
 
     constructor(message, errorCode, additionalDetails = '') 
@@ -83,4 +83,4 @@ class FactorialNoNumberException extends FactorialExceptions
         super(message, errorCode, additionalDetails = '');
     }
 
-}
+} 

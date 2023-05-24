@@ -1,8 +1,8 @@
 <?php
 
-class FactorialException extends Exception
+class ValidationFactorialException extends Exception
 {
-    private $errorCode;
+    private $errorCode; 
     private $additionalDetails;
 
     public function __construct($message, $errorCode, $additionalDetails = '')
@@ -48,7 +48,7 @@ class FactorialException extends Exception
 }
 
 
-class FactorialNoNumberException extends FactorialException
+class NoNumberException extends ValidationFactorialException
 {
     // конструктор принимает сообщение ошибки, код ошибки и доп. детали
     public function __construct($message, $errorCode, $additionalDetails = '')
@@ -60,8 +60,8 @@ class FactorialNoNumberException extends FactorialException
     {
         // запись информации об ошибке в лог-файл
         $errorMessage = $this->getMessage();
-        $errorCode = FactorialException::getErrorCode();
-        $additionalDetails = FactorialException::getAdditionalDetails();
+        $errorCode = ValidationFactorialException::getErrorCode();
+        $additionalDetails = ValidationFactorialException::getAdditionalDetails();
 
         $logMessage = PHP_EOL . "Ошибка вычисления факториала [$errorCode]: $errorMessage";
         if (!empty($additionalDetails)) {
@@ -72,7 +72,7 @@ class FactorialNoNumberException extends FactorialException
     }
 }
 
-class FactorialNumberException extends FactorialException
+class NumberException extends ValidationFactorialException
 {
     // конструктор принимает сообщение ошибки, код ошибки и доп. детали
     public function __construct($message, $errorCode, $additionalDetails = '')
@@ -84,8 +84,8 @@ class FactorialNumberException extends FactorialException
     {
         // запись информации об ошибке в лог-файл
         $errorMessage = $this->getMessage();
-        $errorCode = FactorialException::getErrorCode();
-        $additionalDetails = FactorialException::getAdditionalDetails();
+        $errorCode = ValidationFactorialException::getErrorCode();
+        $additionalDetails = ValidationFactorialException::getAdditionalDetails();
 
         $logMessage = PHP_EOL . "Ошибка вычисления факториала [$errorCode]: $errorMessage";
         if (!empty($additionalDetails)) {
@@ -96,7 +96,7 @@ class FactorialNumberException extends FactorialException
     }
 }
 
-class NegativeNumberException extends FactorialException
+class NegativeNumberException extends ValidationFactorialException
 {
     // конструктор принимает сообщение ошибки, код ошибки и доп. детали
     public function __construct($message, $errorCode, $additionalDetails = '')
@@ -108,8 +108,8 @@ class NegativeNumberException extends FactorialException
     {
         // запись информации об ошибке в лог-файл
         $errorMessage = $this->getMessage();
-        $errorCode = FactorialException::getErrorCode();
-        $additionalDetails = FactorialException::getAdditionalDetails();
+        $errorCode = ValidationFactorialException::getErrorCode();
+        $additionalDetails = ValidationFactorialException::getAdditionalDetails();
 
         $logMessage = PHP_EOL . "Ошибка вычисления факториала [$errorCode]: $errorMessage";
         if (!empty($additionalDetails)) {
@@ -120,7 +120,7 @@ class NegativeNumberException extends FactorialException
     }
 }
 
-class BigNumberException extends FactorialException
+class BigNumberException extends ValidationFactorialException
 {
     // конструктор принимает сообщение ошибки, код ошибки и доп. детали
     public function __construct($message, $errorCode, $additionalDetails = '')
@@ -132,8 +132,8 @@ class BigNumberException extends FactorialException
     {
         // запись информации об ошибке в лог-файл
         $errorMessage = $this->getMessage();
-        $errorCode = FactorialException::getErrorCode();
-        $additionalDetails = FactorialException::getAdditionalDetails();
+        $errorCode = ValidationFactorialException::getErrorCode();
+        $additionalDetails = ValidationFactorialException::getAdditionalDetails();
 
         $logMessage = PHP_EOL . "Ошибка вычисления факториала [$errorCode]: $errorMessage";
         if (!empty($additionalDetails)) {

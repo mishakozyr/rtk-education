@@ -6,7 +6,7 @@
  * 
  * - на JS, вызов методов классов должен быть доступен, 
  * как через консоль, так и через prompt/alert.
- */
+ */ 
 
 class Factorial
 {
@@ -19,24 +19,19 @@ class Factorial
 
     validateNumber()
     {
-        // typeof n !== "number"
 
-        if (!this.n || this.n == "NaN") {
-            throw new FactorialNoNumberException
+        if (this.n === 0) {
+            return 1;
+        } else if (!this.n) {
+            throw new NoNumberException
             ("Аргумент не задан.", 1);
-        }
-
-        if (!Number.isInteger(this.n)) {
-            throw new FactorialNumberException
+        } else if (!Number.isInteger(this.n)) {
+            throw new NumberException
             ("Коэффицент должен быть целым числом", 2);
-        }
-
-        if (this.n < 0) {
+        } else if (this.n < 0) {
             throw new NegativeNumberException
             ("Коэффицент должен быть неотрицательным числом", 3);
-        }
-
-        if (this.n > 20) {
+        } else if (this.n > 20) {
             throw new BigNumberException
             ("Число слишком большое для вычисления факториала.", 4);
         }
@@ -74,7 +69,7 @@ try {
 
 } catch (e) {
 
-    if (e instanceof FactorialNumberException) {
+    if (e instanceof NumberException) {
 
         e.logError();
 
@@ -86,7 +81,7 @@ try {
  
         e.logError();
 
-    } else if (e instanceof FactorialNoNumberException) {
+    } else if (e instanceof NoNumberException) {
  
         e.logError();
 
@@ -130,59 +125,74 @@ class QuadraticEquation
     validateCoefficients()
     {
 
-        if (!this.a) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент а не задан", 1); 
-        } else if (!this.b) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент b не задан", 2); 
-        } else if (!this.c) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент c не задан", 3); 
-        } else if (!this.a && !this.b) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a и b не заданы", 4); 
-        } else if (!this.a && !this.c) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a и c не заданы", 5); 
-        } else if (!this.b && !this.c) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент b и c не заданы", 6); 
-        } else if (!this.a && !this.b && !this.c) {
-            throw new NoQuadraticArgumentException
-            ("Коэффицент a, c и b не заданы", 7); 
+        if (this.a == 0 && this.b == 0 && this.c == 0) { 
+            throw new ZeroCoefficientException
+            ("Коэффициент a, b и c равны 0", 1); 
         } 
-
-        if (!isNumber(this.a)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент а должен быть числом", 8); 
-        } else if (!isNumber(this.b)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент b должен быть числом", 9); 
-        } else if (!isNumber(this.c)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент c должен быть числом", 10); 
-        } else if (!isNumber(this.a) && !isNumber(this.b)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент a и b должны быть числами", 11); 
-        } else if (!isNumber(this.a) && !isNumber(this.c)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент a и c должны быть числами", 12); 
-        } else if (!isNumber(this.b) && !isNumber(this.c)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент b и c должны быть числами", 13); 
-        } else if (!isNumber(this.a) && !isNumber(this.b) && !isNumber(this.c)) {
-            throw new InvalidQuadraticArgumentException
-            ("Коэффицент a, c и b должны быть числами", 14); 
-        } 
-
         if (this.a == 0) { 
             throw new ZeroCoefficientException
-            ("Коэффициент a не может быть равен 0", 15); 
-        } else if (this.a == 0 && this.b == 0 && this.c == 16) { 
-            throw new ZeroCoefficientException
-            ("Коэффициент a, b и c равны 0", 3); 
+            ("Коэффициент a не может быть равен 0", 2); 
+        }
+
+
+        if (!this.a && !this.b && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a, c и b не заданы", 3); 
+        }
+        if (!this.a && !this.b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и b не заданы", 4); 
+        }
+        if (!this.a && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент a и c не заданы", 5); 
+        }
+        if (!this.b && !this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b и c не заданы", 6); 
+        }
+        if (!this.a) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент а не задан", 7); 
+        }
+        if (!this.b) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент b не задан", 8); 
+        }
+        if (!this.c) {
+            throw new NoQuadraticArgumentException
+            ("Коэффицент c не задан", 9); 
+        }
+
+
+        if (!isNumber(this.a) && !isNumber(this.b) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a, c и b должны быть числами", 16); 
         } 
+        if (!isNumber(this.a) && !isNumber(this.b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и b должны быть числами", 13); 
+        }
+        if (!isNumber(this.a) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент a и c должны быть числами", 14); 
+        }
+        if (!isNumber(this.b) && !isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b и c должны быть числами", 15); 
+        }
+        if (!isNumber(this.a)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент а должен быть числом", 10); 
+        }
+        if (!isNumber(this.b)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент b должен быть числом", 11); 
+        }
+        if (!isNumber(this.c)) {
+            throw new InvalidQuadraticArgumentException
+            ("Коэффицент c должен быть числом", 12); 
+        }
 
     }
 

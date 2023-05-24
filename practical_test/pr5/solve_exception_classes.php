@@ -36,7 +36,7 @@ class QuadraticException extends Exception
         $errorMessage = $this->getMessage();
         $errorCode = $this->getErrorCode();
         $additionalDetails = $this->getAdditionalDetails();
-
+ 
         $logMessage = PHP_EOL . "<span style='color: red;'>Ошибка вычисления квадратного уравнения [$errorCode]: 
         $errorMessage</span>";
         if (!$additionalDetails) {

@@ -7,10 +7,10 @@
     <title>Практическая №5</title>
 </head> 
 <body>
-    <?php #require_once("practical5.php") ?>
+    <?php require_once("practical5.php") ?>
 
-    <script src="factorial_error_classes.js"></script>
+    <!-- <script src="factorial_error_classes.js"></script>
     <script src="solve_error_classes.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js"></script> -->
 </body>
 </html>

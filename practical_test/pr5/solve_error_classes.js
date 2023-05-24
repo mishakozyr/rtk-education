@@ -5,7 +5,7 @@ class QuadraticExceptions extends Error
     { 
         super(message);
         this.name = this.constructor.name;
-
+ 
         this.errorCode = errorCode;
         this.additionalDetails = additionalDetails;
     }
